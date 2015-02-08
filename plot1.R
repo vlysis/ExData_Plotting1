@@ -1,13 +1,13 @@
-#bPath <- "H:\\Documents\\Coursera\\DataScienceSpecialization\\rCode\\"
-#hData <- read.csv(bPath+"household_power_consumption.txt", colClasses = "character")
 
-#only load desired days via sqldf
-require(sqldf)
-file <- c("household_power_consumption.txt")
-selData <- read.csv.sql(file, header = T,  sep=";", sql = "select * from file where (Date == '1/2/2007' OR Date == '2/2/2007')" )
 
-activePower <- selData$Global_active_power
+fileName <- c("household_power_consumption.txt")
+#Read data and omit NA's 
+inData <- read.table(fileName, header = TRUE, sep = ";", na.strings = "?")
+inData <-na.omit(inData)
+#select desired days
+selData <- inData[inData$Date %in% c("1/2/2007", "2/2/2007"),]
+
 #Define graphics device
 png("plot1.png")
-hist(activePower,main = "Global active power",col="red",xlab="Global active power (kilowatts)")
+hist(selData$Global_active_power,main = "Global active power",col="red",xlab="Global active power (kilowatts)")
 dev.off()

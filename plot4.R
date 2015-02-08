@@ -1,13 +1,16 @@
-require(sqldf)
-file <- c("household_power_consumption.txt")
-selData <- read.csv.sql(file, header = T,  sep=";", sql = "select * from file where (Date == '1/2/2007' OR Date == '2/2/2007')" )
 
-activePower <- selData$Global_active_power
+
+fileName <- c("household_power_consumption.txt")
+#Read data and omit NA's 
+inData <- read.table(fileName, header = TRUE, sep = ";", na.strings = "?")
+inData <-na.omit(inData)
+#select desired days
+selData <- inData[inData$Date %in% c("1/2/2007", "2/2/2007"),]
 
 dVec <- selData$Date
 tVec <- selData$Time
 
-#conversion to correct date/time format required, set to DD/MM/YY format (required by region)
+#Convert to date object
 dProc <- as.Date(dVec, "%d/%m/20%y")
 #combine Date and Time fields
 combTime <- paste(dProc,tVec)
