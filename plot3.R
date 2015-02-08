@@ -2,6 +2,7 @@
 
 fileName <- c("household_power_consumption.txt")
 #Read data and omit NA's 
+#Note, previously used SQL select, removed due to potential failure mode with ? NA
 inData <- read.table(fileName, header = TRUE, sep = ";", na.strings = "?")
 inData <-na.omit(inData)
 #select desired days
